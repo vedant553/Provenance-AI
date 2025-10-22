@@ -1,26 +1,34 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { sendAnalyzeRequest } from './backendClient';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    let disposable = vscode.commands.registerCommand('provenance-ai.helloWorld', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showErrorMessage('No active editor');
+            return;
+        }
+        const document = editor.document;
+        const selection = editor.selection;
+        const selectedText = document.getText(selection);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "provenance-ai" is now active!');
+        if (!selectedText) {
+            vscode.window.showWarningMessage('No text selected!');
+            return;
+        }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('provenance-ai.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Provenance AI!');
-	});
+        const filePath = document.fileName;
+        const startLine = selection.start.line + 1;
+        const endLine = selection.end.line + 1;
 
-	context.subscriptions.push(disposable);
+        const result = await sendAnalyzeRequest({
+            code: selectedText,
+            filePath,
+            startLine,
+            endLine
+        });
+
+        vscode.window.showInformationMessage(`Analysis summary: ${result}`);
+    });
+    context.subscriptions.push(disposable);
 }
-
-// This method is called when your extension is deactivated
-export function deactivate() {}
