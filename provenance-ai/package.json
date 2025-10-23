@@ -10,16 +10,34 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:provenance-ai.helloWorld"
+    "onCommand:provenance-ai.helloWorld",
+    "onView:provenanceSummary"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
         "command": "provenance-ai.helloWorld",
-        "title": "Provenance AI: Hello World"
+        "title": "Provenance AI: Analyze Code"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "provenanceai",
+          "title": "Provenance AI",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "provenanceai": [
+        {
+          "id": "provenanceSummary",
+          "name": "Analysis"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -41,7 +59,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "cross-fetch": "^4.1.0",
-    "node-fetch": "^3.3.2"
+    "cross-fetch": "^4.1.0"
   }
 }
