@@ -11,6 +11,7 @@
   ],
   "activationEvents": [
     "onCommand:provenance-ai.helloWorld",
+    "onCommand:provenance-ai.testView",
     "onView:provenanceSummary"
   ],
   "main": "./out/extension.js",
@@ -19,6 +20,10 @@
       {
         "command": "provenance-ai.helloWorld",
         "title": "Provenance AI: Analyze Code"
+      },
+      {
+        "command": "provenance-ai.testView",
+        "title": "Provenance AI: Test View"
       }
     ],
     "viewsContainers": {
